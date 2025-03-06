@@ -101,3 +101,12 @@ export const followUnfollow = TryCatch(async (req, res) => {
 
     return res.json({ message: "User Followed" });
 });
+
+
+export const logOut = TryCatch(async(req, res) => {
+    res.cookie("token", "", { maxAge : 0});
+
+    res.json({
+        message : "Logged Out Successfully",
+    })
+})
