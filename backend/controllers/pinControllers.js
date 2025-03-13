@@ -61,5 +61,93 @@ export const cmntonPin = TryCatch(async (req, res) => {
     res.json({
         message : "Comment Added",
     })
-})
+});
 
+
+
+export const deleteComment = TryCatch(async (req, res) => {
+    const pin = await Pin.findById(req.params.id);
+
+    if(!pin) return res.status(400).json({
+        message : "No pin with this id"
+    })
+
+    if(!req.query.commentId) 
+        return res.status(404).json({
+        message : "Please give comment"
+    });
+
+    const commentIdx = pin.comments.findIndex(
+        (item) => item._id.toString() === req.query.commentId.toString()
+    );
+
+    if(commentIdx == -1) 
+        return res.status(404).json({
+            message : "Comment not found",
+    })
+
+    const comment = pin.comments[commentIdx];
+
+    if(comment.user.toString() == req.user._id.toString()) {
+        pin.comments.splice(commentIdx, 1);
+
+        await pin.save();
+
+        return res.json({
+            message : "Comment deleted",
+        })
+    }
+    else {
+        return res.status(403).json({
+            message : "This comment doesn't belongs to you",
+        })
+    }
+});
+
+export const deletePin = TryCatch(async (req, res) => {
+    const pin = await Pin.findById(req.params.id);
+
+    if(!pin) return res.status(400).json({
+        message : "No pin with this id"
+    })
+
+
+    if(pin.owner.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+            message : "Unauthorized",
+        })
+    }
+
+    await cloudinary.v2.uploader.destroy(pin.image.id);
+
+    await pin.deleteOne();
+
+    res.json({
+        message : "Pin deleted",
+    })
+
+});
+
+export const updatePin = TryCatch(async(req, res) => {
+    const pin = await Pin.findById(req.params.id);
+
+    if(!pin) return res.status(400).json({
+        message : "No pin with this id"
+    })
+
+    if(pin.owner.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+            message : "Unauthorized",
+        })
+    }
+
+    pin.title = req.body.title;
+    pin.pin = req.body.pin;
+
+    await pin.save();
+
+    res.json({
+        message : "Pin Updated",
+    })
+
+})
