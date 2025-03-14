@@ -1,16 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 const Login = () => {
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log("Email:", email, "Password:", password);
+  };
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
-    <>
-    <div className='min-h-screen flex items-center justify-center bg-slate-200'>
-        <div className='bg-white p-8 rounded-lg shadow-lg w-full max-w-md'>
-            
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-slate-200">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-center text-2xl font-semibold mb-1">Login</h2>
 
+        <form onSubmit={submitHandler} className="flex flex-col gap-2">
+          <label htmlFor="email" className="font-medium">Username:</label>
+          <input
+            className="text-black p-2 border-[1.5px] rounded-md placeholder:text-sm placeholder:pl-2 focus:ring-2 focus:ring-blue-500 w-full"
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+          />
+
+          <label htmlFor="password" className="font-medium">Password:</label>
+          <input
+            className="text-black p-2 border-[1.5px] rounded-md placeholder:text-sm placeholder:pl-2 focus:ring-2 focus:ring-blue-500 w-full"
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+          />
+
+          <button 
+            type="submit"
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition"
+          >
+            Login
+          </button>
+          <br />
+         <div className='flex justify-center gap-2'>
+            New User? <a href="" className='hover:text-red-600 border-b-[1.5px] border-black hover:border-red-600'>SignUp</a>
+         </div>
+        </form>
+      </div>
     </div>
-    </>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
