@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Link } from "react-router-dom";
 const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
@@ -22,6 +22,8 @@ const Login = () => {
             type="email"
             id="email"
             placeholder="Enter your email"
+            value={email}
+            required
           />
 
           <label htmlFor="password" className="font-medium">Password:</label>
@@ -31,6 +33,8 @@ const Login = () => {
             type="password"
             id="password"
             placeholder="Enter your password"
+            value={password}
+            required
           />
 
           <button 
@@ -41,7 +45,7 @@ const Login = () => {
           </button>
           <br />
          <div className='flex justify-center gap-2'>
-            New User? <a href="" className='hover:text-red-600 border-b-[1.5px] border-black hover:border-red-600'>SignUp</a>
+            New User? <Link to="/register" className='hover:text-red-600 border-b-[1.5px] border-black hover:border-red-600'>SignUp</Link>
          </div>
         </form>
       </div>
