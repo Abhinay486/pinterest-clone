@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserData } from '../context/UserContext';
+import  LoadingAnimationbtn  from '../components/Loading';
 const Login = () => {
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log("Email:", email, "Password:", password);
-  };
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    
+    const {loginUser, btnLoading} = UserData();
+    const navigate = useNavigate();
+    
+    
+    const submitHandler = (e) => {
+      e.preventDefault();
+      console.log("Email:", email, "Password:", password);
+      loginUser(email, password, navigate)
+    };
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-200">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -40,8 +47,11 @@ const Login = () => {
           <button 
             type="submit"
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition"
+            disabled={btnLoading}
           >
-            Login
+            {
+                btnLoading ?  <LoadingAnimationbtn /> : "Login"
+            }
           </button>
           <br />
          <div className='flex justify-center gap-2'>
