@@ -9,6 +9,7 @@ const PinCard = ({ pin }) => {
         alt={pin.title}
         className="w-full h-56 object-cover"
       />
+      
 
       {/* Card Content */}
       <div className="p-4">
