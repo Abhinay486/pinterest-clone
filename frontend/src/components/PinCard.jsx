@@ -2,6 +2,7 @@ import React from "react";
 
 const PinCard = ({ pin }) => {
   return (
+  
     <div className="relative bg-white shadow-lg rounded-2xl overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl">
       {/* Pin Image */}
       <img
