@@ -1,6 +1,7 @@
 import React from "react";
 import { PinData } from "../context/PinContext";
 import LoadingAnimationpage from "../components/Loading"; // Ensure this component exists
+import PinCard from "../components/PinCard";
 
 const Home = () => {
   const { pins, loading } = PinData();
