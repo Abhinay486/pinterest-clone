@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { UserData } from "../context/UserContext";
 import Followersing from "./Followersing";
+import { PinData } from "../context/PinContext";
 
 const UserProfile = ({ user: loggedInUser }) => {
   const { id } = useParams();
@@ -12,12 +13,12 @@ const UserProfile = ({ user: loggedInUser }) => {
   const [error, setError] = useState(null);
   const [followed, setFollowed] = useState(false);
   const [showFollowersing, setShowFollowersing] = useState(false);
-  const { followUser } = UserData();
-
-  useEffect(() => {
+  const { pin, followUser, fetchPin } = PinData();
+ 
+useEffect(() => {
     if (!id) return;
 
-    async function fetchUser() {
+    const fetchUser = async () => {
       try {
         setLoading(true);
         const { data } = await axios.get(`/api/user/${id}`);
@@ -29,36 +30,38 @@ const UserProfile = ({ user: loggedInUser }) => {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchUser();
-  }, [id, loggedInUser?._id]); // Prevent unnecessary re-fetching
+     
+  }, [id, loggedInUser?._id]);
 
   const followHandler = async () => {
-    if (!user) return;
-    
+    if (!user || !loggedInUser) return;
+
     try {
       await followUser(user._id, () => {
-        setFollowed((prev) => {
-          const newFollowers = prev
-            ? user.followers.filter((f) => f !== loggedInUser._id)
-            : [...user.followers, loggedInUser._id];
+        setUser((prevUser) => {
+          const updatedFollowers = followed
+            ? prevUser.followers.filter((f) => f !== loggedInUser._id)
+            : [...prevUser.followers, loggedInUser._id];
 
-          setUser((prevUser) => ({
+          return {
             ...prevUser,
-            followers: newFollowers,
-          }));
-
-          return !prev;
+            followers: updatedFollowers,
+          };
         });
+        setFollowed(!followed);
       });
     } catch (err) {
       console.error("Error following/unfollowing:", err);
     }
   };
 
-  if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>;
-  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+  if (loading)
+    return <p className="text-center mt-10 text-gray-500">Loading...</p>;
+  if (error)
+    return <p className="text-center mt-10 text-red-500">{error}</p>;
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
@@ -95,7 +98,7 @@ const UserProfile = ({ user: loggedInUser }) => {
           </button>
 
           {showFollowersing && (
-            <Followersing className="bg-red-800"
+            <Followersing
               user={user}
               followers={user.followers}
               following={user.following}
@@ -114,7 +117,7 @@ const UserProfile = ({ user: loggedInUser }) => {
         onClick={followHandler}
       >
         {followed ? "Unfollow" : "Follow"}
-      </button>
+      </button> 
     </div>
   );
 };
