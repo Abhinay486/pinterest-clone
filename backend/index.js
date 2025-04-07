@@ -23,9 +23,9 @@ app.use(express.json()); // Fixed the typo
 app.use(cookieParser());
 
 // Root route with a response
-app.get("/", (req, res) => {
-    res.send("Welcome to the API ioho!");
-});
+// app.get("/", (req, res) => {
+//     res.send("Welcome to the API ioho!");
+// });
 
 // Importing routes
 import userRoutes from './routes/userRoutes.js';
