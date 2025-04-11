@@ -15,7 +15,6 @@ const Login = () => {
     
     const submitHandler = (e) => {
       e.preventDefault();
-      console.log("Email:", email, "Password:", password);
       loginUser(email, password, navigate, fetchPins)
     };
   return (
