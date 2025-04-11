@@ -13,7 +13,7 @@ export const PinProvider = ({ children }) => {
       const { data } = await axios.get("/api/pin/all");
 
       setPins(data);
-      setLoading(false);
+      setLoading(false); 
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -130,4 +130,3 @@ export const PinProvider = ({ children }) => {
 };
 
 export const PinData = () => useContext(PinContext);
-.320

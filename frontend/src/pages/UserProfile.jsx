@@ -13,7 +13,7 @@ const UserProfile = ({ user: loggedInUser }) => {
   const [error, setError] = useState(null);
   const [followed, setFollowed] = useState(false);
   const [showFollowersing, setShowFollowersing] = useState(false);
-  const { pin, followUser, fetchPin } = PinData();
+  const { pin, followUser, fetchPin } = UserData();
  
 useEffect(() => {
     if (!id) return;
