@@ -5,7 +5,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   define: {
-    "process.env": {}, // Ensures process.env is defined
+    'process.env.API_KEY': JSON.stringify('121269184968451'), // Ensures process.env is defined
     global: "window",  // Fixes missing 'global'
   },
   resolve: {
