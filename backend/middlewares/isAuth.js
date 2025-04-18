@@ -1,28 +1,42 @@
-import jwt from "jsonwebtoken";
-import  {User}  from "../models/userModel.js";
+import jwt from 'jsonwebtoken';
+import { User } from '../models/userModel.js';
 
 export const isAuth = async (req, res, next) => {
     try {
         const token = req.cookies.token;
-        if(!token) {
+        if (!token) {
             return res.status(403).json({
-                message : "Please Login"
-            })
+                message: 'Please Login'
+            });
         }
 
+        // Decode and verify the token
+        const decodedData = jwt.verify(token, process.env.JWT_SEC);
 
-        const decodedData = jwt.verify(token, process.env.JWT_SEC);         
-        if(!decodedData)  return res.status(403).json({
-            message : "token Expired"
-        }) 
-
-
+        // If token is expired or invalid, jwt.verify will throw an error
         req.user = await User.findById(decodedData.id);
-        next();
+        if (!req.user) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
 
+        next();
     } catch (error) {
+        // Handling different JWT errors explicitly
+        if (error instanceof jwt.TokenExpiredError) {
+            return res.status(403).json({
+                message: 'Token expired'
+            });
+        } else if (error instanceof jwt.JsonWebTokenError) {
+            return res.status(403).json({
+                message: 'Invalid token'
+            });
+        }
+
+        // Generic catch if something else fails
         res.status(500).json({
-            message : "Please Login"
-        })
+            message: 'Internal server error'
+        });
     }
-}
+};
