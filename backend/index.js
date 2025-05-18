@@ -12,13 +12,16 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Enable CORS for your frontend
+
 app.use(cors({
-    origin: process.env.NODE_ENV === 'development'
-        ? 'http://localhost:5173'
-        : 'https://frontend.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: process.env.NODE_ENV === 'production' 
+      ? 'http://localhost:5173' // Replace with your actual frontend domain
+      : "https://frontend.vercel.app",
     credentials: true,
-}));
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Set-Cookie']
+  }));
 
 
 // Middleware
@@ -35,12 +38,7 @@ app.use("/api/pin", pinRoutes);
 app.get("/", (req, res) => {
     res.send("HI THERE!");
 })
-// Serve frontend
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/frontend/dist")));
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
-});
+
 
 // Start server
 app.listen(port, async () => {
