@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(false);
     const [btnLoading, setBtnLoading] = useState(false)
 
-    async function registerUser(name, email, password, navigate, fetchPins ) {
+    async function registerUser(name, email, password, navigate,  ) {
         setBtnLoading(true);
         try {
             const data = await axios.post("/api/user/register/", {name, email, password});
@@ -23,14 +23,13 @@ export const UserProvider = ({ children }) => {
             toast.success("Log In Successfull");
             setBtnLoading(false);
             navigate("/");
-            fetchPins();
         } catch (error) {
             toast.error(error.response.data.message);
             setBtnLoading(false);
         }
     }
 
-    async function loginUser(email, password, navigate, fetchPins) {
+    async function loginUser(email, password, navigate) {
         setBtnLoading(true);
         try {
             const data = await axios.post("/api/user/login/", {email, password});
@@ -40,7 +39,6 @@ export const UserProvider = ({ children }) => {
             toast.success("Log In Successfull");
             setBtnLoading(false);
             navigate("/");
-            fetchPins();
         } catch (error) {
             toast.error(error.response.data.message);
             setBtnLoading(false);
