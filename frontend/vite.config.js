@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-
 export default defineConfig({
   plugins: [react()],
+  base: process.env.NODE_ENV === 'production' ? '/' : '/',
   define: {
     'process.env': {},
     global: "window",  // Fixes missing 'global'
@@ -15,17 +15,7 @@ export default defineConfig({
     },
   },
   server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:5000",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
-  build: {
-    rollupOptions: {
-      external: ["mock-aws-s3", "aws-sdk", "nock"],
-    },
+    host: '0.0.0.0',  // ✅ Allows access from LAN and tunnels
+    port: 5173,       // Optional: specify a fixed port
   },
 });

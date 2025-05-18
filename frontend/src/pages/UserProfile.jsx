@@ -14,6 +14,8 @@ const UserProfile = ({ user: loggedInUser }) => {
   const [followed, setFollowed] = useState(false);
   const [showFollowersing, setShowFollowersing] = useState(false);
   const { pin, followUser, fetchPin } = UserData();
+const BACKEND_URL = "https://pinterest-clone-1-9mwr.onrender.com";
+axios.defaults.withCredentials = true;
  
 useEffect(() => {
     if (!id) return;
@@ -21,7 +23,7 @@ useEffect(() => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`/api/user/${id}`);
+        const { data } = await axios.get(`${BACKEND_URL}/api/user/${id}`);
         setUser(data);
         setFollowed(data?.followers?.includes(loggedInUser?._id) || false);
       } catch (err) {

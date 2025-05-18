@@ -3,7 +3,10 @@ import { createContext } from "react";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from 'axios';
 import { PinData } from "./PinContext";
+axios.defaults.withCredentials = true;
 
+const BACKEND_URL = "https://pinterest-clone-1-9mwr.onrender.com";
+axios.defaults.withCredentials = true;
 
 const UserContext = createContext();
 
@@ -16,7 +19,7 @@ export const UserProvider = ({ children }) => {
     async function registerUser(name, email, password, navigate,  ) {
         setBtnLoading(true);
         try {
-            const data = await axios.post("/api/user/register/", {name, email, password});
+            const data = await axios.post(`${BACKEND_URL}/api/user/register/`, {name, email, password});
             console.log(data)
             setUser(data.user);
             setIsAuth(true);
@@ -32,7 +35,7 @@ export const UserProvider = ({ children }) => {
     async function loginUser(email, password, navigate) {
         setBtnLoading(true);
         try {
-            const data = await axios.post("/api/user/login/", {email, password});
+            const data = await axios.post(`${BACKEND_URL}/api/user/login/`, {email, password});
             console.log(data)
             setUser(data.user);
             setIsAuth(true);
@@ -47,7 +50,7 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     async function fetchUser(){
         try {
-            const {data} = await axios.get("/api/user/me");
+            const {data} = await axios.get(`${BACKEND_URL}/api/user/me`);
 
             setUser(data);
             setIsAuth(true);
@@ -59,7 +62,7 @@ export const UserProvider = ({ children }) => {
     }
     async function followUser(id, fetchUser){
         try {
-            const {data} = await axios.post("/api/user/follow/" + id);
+            const {data} = await axios.post(`${BACKEND_URL}/api/user/follow/` + id);
 
             toast.success(data.message);
             fetchUser();

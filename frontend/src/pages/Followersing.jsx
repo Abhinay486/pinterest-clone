@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 const Followersing = ({ user, followers, following, onClose }) => {
   const [followerNames, setFollowerNames] = useState({});
   const [followingNames, setFollowingNames] = useState({});
+const BACKEND_URL = "https://pinterest-clone-1-9mwr.onrender.com";
+axios.defaults.withCredentials = true;
 
   useEffect(() => {
     const fetchNames = async (ids, setNames) => {
@@ -11,7 +13,7 @@ const Followersing = ({ user, followers, following, onClose }) => {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            const res = await axios.get(`/api/user/${id}`);
+            const res = await axios.get(`${BACKEND_URL}/api/user/${id}`);
             namesMap[id] = res.data.name;
           } catch (error) {
             console.error(`Error fetching user ${id}:`, error);

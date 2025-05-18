@@ -13,10 +13,13 @@ const port = process.env.PORT || 5000;
 
 // Enable CORS for your frontend
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.NODE_ENV === 'development'
+        ? 'http://localhost:5173'
+        : 'https://frontend.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
+
 
 // Middleware
 app.use(express.json());

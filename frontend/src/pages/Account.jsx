@@ -5,13 +5,15 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { UserData } from "../context/UserContext";
+const BACKEND_URL = "https://pinterest-clone-1-9mwr.onrender.com";
+axios.defaults.withCredentials = true;
 
 const Account = ({ user }) => {
     const navigate = useNavigate();
     const {setIsAuth, setUser} = UserData();
   const logOutHand = async() => {
     try {
-        const {data} = await axios.get("api/user/logout");
+        const {data} = await axios.get(`${BACKEND_URL}api/user/logout`);
         toast.success(data.message);
         navigate("/login");
         setIsAuth(false);

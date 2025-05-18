@@ -5,7 +5,6 @@ import PinCard from "../components/PinCard";
 
 const Home = () => {
   const { pins, loading } = PinData();
-  console.log(pins);
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
